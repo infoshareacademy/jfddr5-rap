@@ -7,7 +7,7 @@ type Coordinates = {
     y: number
 }
 
-interface PlayerDynamics {
+export interface PlayerDynamics {
     velocity: Coordinates
     position: Coordinates
     on_ground: boolean
@@ -30,12 +30,14 @@ interface ContextPlayer {
     setPlayerDynamics: (param: PlayerDynamics) => void
 }
 
+export type PressedKeys = string[];
+
 export const PlayerDynamicsContext = React.createContext<ContextPlayer | null>(null);
 
 export const GameView = () => {
 
-
-    const [playerDynamics, setPlayerDynamics] = useState<PlayerDynamics>(INITIAL_PLAYER_POSITION);  
+    const [playerDynamics, setPlayerDynamics] = useState<PlayerDynamics>(INITIAL_PLAYER_POSITION); 
+    const [pressedKeys, setPressedKeys] = useState<string[]>([]);
 
     const PlayerDynamicsContextObject = {
         playerDynamics,
@@ -44,7 +46,7 @@ export const GameView = () => {
 
     return (
         <PlayerDynamicsContext.Provider value={PlayerDynamicsContextObject}>
-            <Tower />
+            <Tower setPressedKeys={setPressedKeys}/>
         </PlayerDynamicsContext.Provider>
     )
 }

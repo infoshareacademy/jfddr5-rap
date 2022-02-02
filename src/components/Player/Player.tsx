@@ -2,7 +2,6 @@ import React, { FunctionComponent, useContext } from "react"
 import styled from "styled-components"
 import { PlayerDynamicsContext } from "../../views/GameView"
 
-
 interface Props {
     x?: number 
     y?: number 
