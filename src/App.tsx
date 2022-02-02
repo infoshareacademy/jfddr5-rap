@@ -1,10 +1,11 @@
-import { Tower } from './components/Tower/Tower';
+import { GameView } from "./views/GameView";
+
 
 
 function App() {
 	return (
     	<div className="App">
-			<Tower />
+			<GameView />
     	</div>
 	);
 }

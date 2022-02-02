@@ -1,16 +1,26 @@
-import React, { FunctionComponent } from "react"
+import React, { FunctionComponent, useContext } from "react"
 import styled from "styled-components"
+import { PlayerDynamicsContext } from "../../views/GameView"
+
 
 interface Props {
-    x?: number
-    y?: number
+    x?: number 
+    y?: number 
 }
 
-export const Player = ({ x, y }: Props):JSX.Element => {
+export const Player = ():JSX.Element => {
+
+
     return (
-        <PlayerIcon x={300} y={300}>
-            A
-        </PlayerIcon>
+        <PlayerDynamicsContext.Consumer>
+            {context => (
+                <PlayerIcon x={context?.playerDynamics.position.x || 0} y={context?.playerDynamics.position.y || 0}>
+            
+                </PlayerIcon>
+            )}
+        </PlayerDynamicsContext.Consumer>
+        
+        
     )
 }
 
@@ -18,7 +28,7 @@ const PlayerIcon = styled.div<Props>`
     position: absolute;
     bottom: ${props => props.y}px;
     left: ${props => props.x}px;
-    width: 100px;
-    height: 100px;
+    width: 30px;
+    height: 30px;
     background-color: #555;
 `
