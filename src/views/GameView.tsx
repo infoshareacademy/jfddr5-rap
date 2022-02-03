@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tower } from '../components/Tower/Tower';
 import React from 'react';
 
@@ -30,14 +30,39 @@ interface ContextPlayer {
     setPlayerDynamics: (param: PlayerDynamics) => void
 }
 
-export type PressedKeys = string[];
+export interface PressedKeys {
+    "ArrowUp": boolean,
+    "ArrowLeft": boolean,
+    "ArrowRight": boolean,
+    " ": boolean,
+}
 
 export const PlayerDynamicsContext = React.createContext<ContextPlayer | null>(null);
+
 
 export const GameView = () => {
 
     const [playerDynamics, setPlayerDynamics] = useState<PlayerDynamics>(INITIAL_PLAYER_POSITION); 
-    const [pressedKeys, setPressedKeys] = useState<string[]>([]);
+    const [pressedKeys, setPressedKeys] = useState<PressedKeys>({
+        ArrowUp: false,
+        ArrowLeft: false,
+        ArrowRight: false,
+        " ": false,
+    });
+
+    useEffect(()=>{
+        let animationFrameID: number;
+        const animation = () => {
+            
+
+            animationFrameID = requestAnimationFrame(animation);
+        }
+
+        animation();
+
+        return () => cancelAnimationFrame(animationFrameID);
+    }, [])
+    
 
     const PlayerDynamicsContextObject = {
         playerDynamics,

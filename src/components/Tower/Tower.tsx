@@ -1,44 +1,52 @@
 import styled from "styled-components"
 import { Player } from "../Player/Player"
+import { PressedKeys } from "../../views/GameView"
 
-type PushArrFn = (param: string[]) => string[]
+type PushArrFn = (oldState: PressedKeys) => PressedKeys
 
 interface Props {
     setPressedKeys: (param: PushArrFn) => void 
 }
 
+
+
+type StringKeys = Extract<keyof PressedKeys, string>
+
+// function isKey(key: StringKeys | string): key is StringKeys {
+//     return (key as StringKeys).ArrowUp !== undefined;
+// }
+
 export const Tower = ({setPressedKeys}:Props) => {
 
-    const HandleKeyDown = (param: string):void => {
-        setPressedKeys((oldState: string[]) => {
-            console.log(param)
-            if (oldState.includes(param)) {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        const param: "ArrowUp" | "ArrowLeft" | "ArrowRight" | " " = e.key
+        setPressedKeys((oldState) => {
+            if (oldState[param]===true) {
                 return oldState 
             }
-            const newArr: string[] = oldState;
-            newArr.push(param)
-            console.log(newArr)
-            return newArr 
+            oldState[param] = true;
+            return oldState 
         })
     }
 
-    const HandleKeyUp = (param: string):void => {
-        setPressedKeys((oldState: string[]) => {
-            const newArr: string[] = oldState;
-            if (newArr.includes(param)) {
-                const i = newArr.indexOf(param);
-                newArr.splice(i, 1);
+    const handleKeyUp = (param: string):void => {
+        setPressedKeys((oldState) => {
+            if (param in oldState){
+                if (oldState[param]===false) {
+                    return oldState
+                }
+                oldState[param] = false;
+                return oldState; 
             }
-            console.log(newArr)
-            return newArr 
+            return oldState
         })
     }
 
     return (
         <TowerContainer 
                 tabIndex={-1} 
-                onKeyPress={(e) => HandleKeyDown(e.locale)}
-                onKeyUp={(e) => HandleKeyUp(e.key)}>
+                onKeyDown={(e) => handleKeyDown(e)}
+                onKeyUp={(e) => handleKeyUp(e.key)}>
             <h1>Tower frame</h1>
             <Player />
         </TowerContainer>
